@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npm install --workspace=@svarah/web --no-audit --no-fund",
+  "buildCommand": "npm run build",
+  "outputDirectory": "apps/web/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/downloads/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    }
+  ]
+}

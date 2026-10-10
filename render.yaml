@@ -1,0 +1,61 @@
+# Render Blueprint — the Svarah API (FastAPI backend).
+# Dashboard → New → Blueprint → pick this repository. Every push to `main`
+# that touches the backend redeploys it.
+#
+# Free plan: the filesystem is not kept. The SQLite database and generated
+# media under assets_store/ are wiped on every restart, deploy and idle
+# spin-down. For durable data move to a paid plan and add a disk mounted at
+# /srv/backend/data, then set TITAN_DATABASE_URL=sqlite:////srv/backend/data/titan.db
+# and TITAN_ASSETS_DIR=/srv/backend/data/assets_store.
+services:
+  - type: web
+    name: svarah-api
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    rootDir: friendly-octo-fishstick/backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    # Mobile- and web-only pushes must not restart the API (a restart wipes
+    # the free plan's data).
+    buildFilter:
+      paths:
+        - friendly-octo-fishstick/backend/**
+        - render.yaml
+    envVars:
+      - key: TITAN_MODE
+        value: live
+      # The website's origin(s), comma-separated, e.g. https://svarah-ai.vercel.app
+      - key: TITAN_CORS_ORIGINS
+        sync: false
+      # Generated once by Render and kept across deploys.
+      - key: TITAN_SEAL_SECRET
+        generateValue: true
+      - key: TITAN_AUTH_SECRET
+        generateValue: true
+      # Provider keys — entered in the dashboard, never committed.
+      - key: TITAN_AGNES_API_KEY
+        sync: false
+      - key: TITAN_SARVAM_API_KEY
+        sync: false
+      - key: TITAN_MAGICHOUR_API_KEYS
+        sync: false
+      - key: TITAN_UPLOADPOST_API_KEY
+        sync: false
+      # Same value as VITE_FIREBASE_API_KEY on the website.
+      - key: TITAN_FIREBASE_API_KEY
+        sync: false
+      - key: TITAN_AGNES_API_BASE
+        value: https://apihub.agnes-ai.com/v1
+      - key: TITAN_EXTRACTION_PROVIDER
+        value: auto
+      - key: TITAN_STT_PROVIDER
+        value: sarvam
+      - key: TITAN_VOICE_PROVIDER
+        value: sarvam
+      - key: TITAN_VIDEO_PROVIDER
+        value: auto
+      - key: TITAN_TASKS_MODE
+        value: local
