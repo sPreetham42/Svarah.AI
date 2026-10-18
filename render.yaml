@@ -14,15 +14,15 @@ services:
     plan: free
     region: singapore
     branch: main
-    rootDir: friendly-octo-fishstick/backend
+    rootDir: backend
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
     autoDeployTrigger: commit
-    # Mobile- and web-only pushes must not restart the API (a restart wipes
+    # Website-only pushes must not restart the API (a restart wipes
     # the free plan's data).
     buildFilter:
       paths:
-        - friendly-octo-fishstick/backend/**
+        - backend/**
         - render.yaml
     envVars:
       - key: TITAN_MODE
@@ -39,6 +39,13 @@ services:
       - key: TITAN_AGNES_API_KEY
         sync: false
       - key: TITAN_SARVAM_API_KEY
+        sync: false
+      # Optional backup Sarvam keys, used in order when one fails.
+      - key: TITAN_SARVAM_API_KEY_2
+        sync: false
+      - key: TITAN_SARVAM_API_KEY_3
+        sync: false
+      - key: TITAN_SARVAM_API_KEY_4
         sync: false
       - key: TITAN_MAGICHOUR_API_KEYS
         sync: false

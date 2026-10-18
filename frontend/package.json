@@ -1,0 +1,13 @@
+{
+  "name": "svarah-ai-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@svarah/web",
+    "build": "npm run build --workspace=@svarah/web",
+    "preview": "npm run preview --workspace=@svarah/web"
+  }
+}
