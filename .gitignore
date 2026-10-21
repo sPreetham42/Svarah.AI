@@ -38,3 +38,6 @@ AGENTS.md
 
 # ── Launch-video renders (/brag) ───────────────────────────────────
 brag-output*/
+
+# Local agent tooling
+.freebuff/
