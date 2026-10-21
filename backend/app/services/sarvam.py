@@ -27,6 +27,7 @@ deterministic mocks labelled ``is_mock=True``.
 from __future__ import annotations
 
 import abc
+import asyncio
 import base64
 import hashlib
 from dataclasses import dataclass
@@ -234,6 +235,31 @@ _AUDIO_EXTENSIONS = {
 }
 
 
+def _normalize_to_wav(audio: bytes) -> tuple[bytes, str] | None:
+    """Re-encode a browser recording as 16 kHz mono WAV, which Sarvam always reads.
+
+    Streamed MediaRecorder WebM often lacks a duration/seek header and some of it
+    is rejected as "Failed to read the file". Returns None when FFmpeg is
+    unavailable or cannot decode the clip (the caller then sends the original).
+    """
+    import subprocess
+
+    from .video_service import _resolved_ffmpeg
+
+    ffmpeg = _resolved_ffmpeg()
+    if ffmpeg is None:
+        return None
+    try:
+        done = subprocess.run(
+            [ffmpeg, "-v", "error", "-i", "pipe:0", "-ac", "1", "-ar", "16000", "-f", "wav", "pipe:1"],
+            input=audio, capture_output=True, timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    # A 44-byte WAV header alone means no audio was decoded.
+    return (done.stdout, "audio/wav") if done.returncode == 0 and len(done.stdout) > 1000 else None
+
+
 def sarvam_language_code(hint: str | None) -> str | None:
     """Normalize a language hint to a code Sarvam STT accepts (or None)."""
     if not hint:
@@ -277,6 +303,9 @@ class SarvamSTT(STTSarvamClient):
         if not audio:
             raise STTUnavailableError("The recording is empty.", code="empty_audio")
         url = f"{_base_url(settings)}/speech-to-text"
+        converted = await asyncio.to_thread(_normalize_to_wav, audio)
+        if converted is not None:
+            audio, mime = converted
         # Browsers report e.g. "audio/webm;codecs=opus"; send the bare container
         # type and a matching filename.
         content_type = (mime or "audio/webm").split(";", 1)[0].strip().lower() or "audio/webm"
