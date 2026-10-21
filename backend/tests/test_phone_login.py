@@ -186,3 +186,4 @@ def test_google_rejects_a_sign_in_that_is_not_google(client, anonymous, env_over
     response = _google_sign_in(client, anonymous)
     assert response.status_code == 401
     assert response.json()["error"]["code"] == "google_not_verified"
+

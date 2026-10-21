@@ -179,6 +179,8 @@ class Settings:
     #: Firebase Web API key of the project whose phone and Google sign-ins are accepted.
     #: Identifies the project to Google; it is not a credential by itself.
     firebase_api_key: str | None
+    github_client_id: str | None
+    github_client_secret: str | None
     max_request_bytes: int
     app_version: str = APP_VERSION
 
@@ -214,6 +216,10 @@ class Settings:
     def phone_login_enabled(self) -> bool:
         """Phone sign-in needs a Firebase project to verify against and a key to sign sessions."""
         return bool(self.firebase_api_key) and self.auth_configured
+
+    @property
+    def github_login_enabled(self) -> bool:
+        return bool(self.github_client_id and self.github_client_secret) and self.auth_configured
 
     @property
     def google_login_enabled(self) -> bool:
@@ -369,6 +375,8 @@ def _build_settings() -> Settings:
         auth_token_ttl_hours=_env_int("TITAN_AUTH_TOKEN_TTL_HOURS", 8760),
         allow_demo_login=(_env("TITAN_ALLOW_DEMO_LOGIN", "true") or "true").lower() != "false",
         firebase_api_key=_env_secret("TITAN_FIREBASE_API_KEY"),
+        github_client_id=_env("TITAN_GITHUB_CLIENT_ID"),
+        github_client_secret=_env_secret("TITAN_GITHUB_CLIENT_SECRET"),
         max_request_bytes=_env_int("TITAN_MAX_REQUEST_BYTES", 32 * 1024 * 1024),
     )
 

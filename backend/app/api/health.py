@@ -74,6 +74,7 @@ def modes() -> ModesResponse:
             "demo_login_enabled": settings.demo_login_enabled,
             "phone_login_enabled": settings.phone_login_enabled,
             "google_login_enabled": settings.google_login_enabled,
+            "github_login_enabled": settings.github_login_enabled,
             "token_ttl_hours": settings.auth_token_ttl_hours,
             "detail": _auth_detail(settings),
         },

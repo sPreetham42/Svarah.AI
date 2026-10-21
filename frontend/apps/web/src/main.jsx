@@ -11,6 +11,7 @@ import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { ThemeProvider } from './ThemeContext.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
+import GitHubCallback from './GitHubCallback.jsx';
 import DemoVideo from './DemoVideo.jsx';
 import DownloadApp from './DownloadApp.jsx';
 import VoiceWorkspace from './workspace/VoiceWorkspace.jsx';
@@ -68,6 +69,7 @@ function AppContent(){
           <Route path="/connected" element={<Connected/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/signup" element={<Signup/>}/>
+          <Route path="/auth/github" element={<GitHubCallback/>}/>
           {/* The voice workspace. /dashboard, /app and /account are kept as
               aliases so existing links keep working. */}
           <Route path="/workspace" element={<VoiceWorkspace/>}/>

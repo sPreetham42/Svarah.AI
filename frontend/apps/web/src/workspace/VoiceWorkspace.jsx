@@ -469,8 +469,12 @@ export default function VoiceWorkspace() {
   const studioHref = session ? `/studio?campaign=${session.id}` : '/studio';
   const locked = session?.factsheet?.status === 'locked' || session?.factsheet?.status === 'superseded';
   const captions = assets.filter((a) => a.kind === 'caption' && a.text_content);
-  const master = captions.find((c) => c.locale === 'en-IN' && c.provenance?.channel === 'instagram')
-    ?? captions.find((c) => c.locale === 'en-IN') ?? captions[0];
+  // The caption in the language the owner asked for; English when that copy does not exist.
+  const spoken = facts?.languages?.[0];
+  const captionFor = (channel) =>
+    captions.find((c) => c.provenance?.language === spoken && c.provenance?.channel === channel)
+    ?? captions.find((c) => c.locale === 'en-IN' && c.provenance?.channel === channel);
+  const master = captionFor('instagram') ?? captions.find((c) => c.locale === 'en-IN') ?? captions[0];
   const poster = assets.find((a) => a.kind === 'poster');
   const voice = assets.find((a) => a.kind === 'voice');
   const videos = assets.filter((a) => a.kind === 'video');
@@ -494,7 +498,7 @@ export default function VoiceWorkspace() {
   const waitNote = WAIT_NOTES[Math.floor(elapsed / 4) % WAIT_NOTES.length];
   const showPackage = Boolean(making) || Boolean(poster);
   const socialCaptions = ['instagram', 'whatsapp']
-    .map((channel) => captions.find((c) => c.locale === 'en-IN' && c.provenance?.channel === channel))
+    .map(captionFor)
     .filter(Boolean);
 
   // What the next spoken reply means. Read through a ref so the recorder

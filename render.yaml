@@ -51,6 +51,11 @@ services:
         sync: false
       - key: TITAN_UPLOADPOST_API_KEY
         sync: false
+      # GitHub OAuth App; the client ID is also VITE_GITHUB_CLIENT_ID on the website.
+      - key: TITAN_GITHUB_CLIENT_ID
+        sync: false
+      - key: TITAN_GITHUB_CLIENT_SECRET
+        sync: false
       # Same value as VITE_FIREBASE_API_KEY on the website.
       - key: TITAN_FIREBASE_API_KEY
         sync: false

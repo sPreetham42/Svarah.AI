@@ -122,9 +122,9 @@ export function AuthProvider({ children }) {
     [adopt],
   );
 
-  /** `idToken` is the Firebase ID token from Google's sign-in window. */
-  const loginWithGoogle = useCallback(
-    async (idToken) => adopt(await api.googleLogin({ idToken })),
+  /** `idToken` is the Firebase ID token from Google's sign-in window (GitHub passes `code` instead). */
+  const loginWithSocial = useCallback(
+    async (provider, idToken, code) => adopt(await api.socialLogin({ provider, idToken, code })),
     [adopt],
   );
 
@@ -145,8 +145,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, checking, sessionNotice, login, signup, loginWithDemo, loginWithPhone, loginWithGoogle, logout, handleAuthFailure }),
-    [user, checking, sessionNotice, login, signup, loginWithDemo, loginWithPhone, loginWithGoogle, logout, handleAuthFailure],
+    () => ({ user, checking, sessionNotice, login, signup, loginWithDemo, loginWithPhone, loginWithSocial, logout, handleAuthFailure }),
+    [user, checking, sessionNotice, login, signup, loginWithDemo, loginWithPhone, loginWithSocial, logout, handleAuthFailure],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

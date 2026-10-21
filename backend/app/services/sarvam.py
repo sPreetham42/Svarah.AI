@@ -49,6 +49,12 @@ SUPPORTED_LANGUAGES: dict[str, str] = {
     "Kannada": "kn-IN",
     "Tamil": "ta-IN",
     "Telugu": "te-IN",
+    "Bengali": "bn-IN",
+    "Gujarati": "gu-IN",
+    "Malayalam": "ml-IN",
+    "Marathi": "mr-IN",
+    "Odia": "od-IN",
+    "Punjabi": "pa-IN",
 }
 LANGUAGE_NAME_BY_CODE = {code: name for name, code in SUPPORTED_LANGUAGES.items()}
 

@@ -35,3 +35,6 @@ Thumbs.db
 **/.claude/
 *.log
 AGENTS.md
+
+# ── Launch-video renders (/brag) ───────────────────────────────────
+brag-output*/

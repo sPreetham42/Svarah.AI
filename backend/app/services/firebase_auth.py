@@ -115,23 +115,29 @@ def verify_phone_id_token(id_token: str, settings: Settings) -> FirebaseIdentity
     return FirebaseIdentity(uid=str(account["localId"]), phone=phone)
 
 
-def verify_google_id_token(id_token: str, settings: Settings) -> GoogleIdentity:
-    """Resolve a Firebase ID token to the Google account that signed in."""
+def _verify_provider_token(id_token: str, settings: Settings, provider_id: str, label: str) -> GoogleIdentity:
     account = _lookup_account(id_token, settings)
     providers = account.get("providerUserInfo")
-    google = next(
+    info = next(
         (
             p
             for p in (providers if isinstance(providers, list) else [])
-            if isinstance(p, dict) and p.get("providerId") == "google.com"
+            if isinstance(p, dict) and p.get("providerId") == provider_id
         ),
         None,
     )
-    email = str((google or {}).get("email") or "").strip().lower()
-    if google is None or not email or not account.get("emailVerified"):
-        # A valid Firebase account, but not one that signed in with Google.
+    email = str((info or {}).get("email") or "").strip().lower()
+    if info is None or not email or not account.get("emailVerified"):
+        # A valid Firebase account, but not one that signed in with this provider.
         raise AuthenticationError(
-            "This sign-in did not come from a Google account.", code="google_not_verified"
+            f"This sign-in did not come from a {label} account with a verified email.",
+            code=f"{label.lower()}_not_verified",
         )
-    name = str(google.get("displayName") or account.get("displayName") or "").strip()
+    name = str(info.get("displayName") or account.get("displayName") or "").strip()
     return GoogleIdentity(uid=str(account["localId"]), email=email, name=name)
+
+
+def verify_google_id_token(id_token: str, settings: Settings) -> GoogleIdentity:
+    """Resolve a Firebase ID token to the Google account that signed in."""
+    return _verify_provider_token(id_token, settings, "google.com", "Google")
+

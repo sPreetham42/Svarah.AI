@@ -49,7 +49,7 @@ import {
  * papered over with a placeholder.
  */
 
-const VOICE_LANGUAGES = ['English', 'Hindi', 'Kannada', 'Tamil', 'Telugu'];
+const VOICE_LANGUAGES = ['English', 'Hindi', 'Kannada', 'Tamil', 'Telugu', 'Bengali', 'Gujarati', 'Malayalam', 'Marathi', 'Odia', 'Punjabi'];
 const CHANNEL_LABELS = {
   voice_script: 'Voice script',
   whatsapp: 'WhatsApp message',

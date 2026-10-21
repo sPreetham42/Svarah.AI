@@ -243,15 +243,15 @@ export async function phoneLogin({ idToken, displayName } = {}) {
 }
 
 /**
- * Exchange a Firebase ID token (from Google's sign-in window) for a Svarah
- * session. The first sign-in from a Google account creates its account.
+ * Exchange a Firebase ID token (Google) or a GitHub OAuth `code` for a Svarah
+ * session. The first sign-in creates the account.
  */
-export async function googleLogin({ idToken } = {}) {
-  const payload = await request('/auth/google', {
+export async function socialLogin({ provider, idToken, code } = {}) {
+  const payload = await request(`/auth/${provider}`, {
     method: 'POST',
     auth: false,
     timeoutMs: 30_000, // the backend verifies the token with Google
-    body: { id_token: idToken },
+    body: provider === 'github' ? { code } : { id_token: idToken },
   });
   return adoptSession(payload);
 }

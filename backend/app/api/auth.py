@@ -32,6 +32,7 @@ from ..security import (
     verify_password,
 )
 from ..services.firebase_auth import verify_google_id_token, verify_phone_id_token
+from ..services.github_auth import verify_github_code
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -79,6 +80,10 @@ class PhoneLoginRequest(BaseModel):
 class GoogleLoginRequest(BaseModel):
     #: The Firebase ID token the browser received from Google's sign-in window.
     id_token: str = Field(min_length=20, max_length=8192)
+
+
+class GithubLoginRequest(BaseModel):
+    code: str = Field(min_length=5, max_length=256)
 
 
 class AccountView(BaseModel):
@@ -214,7 +219,22 @@ def google_login(payload: GoogleLoginRequest, db: Session = Depends(get_db)) -> 
             "Authentication is not configured: set TITAN_AUTH_SECRET.",
             details={"configured": False},
         )
-    identity = verify_google_id_token(payload.id_token, settings)
+    return _social_login(db, verify_google_id_token(payload.id_token, settings))
+
+
+@router.post("/github", response_model=SessionView)
+def github_login(payload: GithubLoginRequest, db: Session = Depends(get_db)) -> SessionView:
+    """Sign in with the one-time `code` GitHub's OAuth redirect returned."""
+    settings = get_settings()
+    if not settings.auth_configured:
+        raise AuthUnavailableError(
+            "Authentication is not configured: set TITAN_AUTH_SECRET.",
+            details={"configured": False},
+        )
+    return _social_login(db, verify_github_code(payload.code, settings))
+
+
+def _social_login(db: Session, identity) -> SessionView:
     email = normalize_email(identity.email)
     owner_uid = f"fb_{identity.uid}"
     user = db.scalar(select(User).where(User.owner_uid == owner_uid))

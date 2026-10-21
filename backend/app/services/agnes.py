@@ -38,13 +38,19 @@ from .gateway import CircuitBreaker, ProviderError, with_retry
 VERIFY_KEY = "TITAN_AGNES_INTERFACE_VERIFIED"
 
 #: Percent-word/format helpers shared with the mock plan generator.
-TARGETED_LANGUAGES = ("English", "Hindi", "Kannada", "Tamil", "Telugu")
+TARGETED_LANGUAGES = ("English", "Hindi", "Kannada", "Tamil", "Telugu", "Bengali", "Gujarati", "Malayalam", "Marathi", "Odia", "Punjabi")
 LOCALE_CODE_MAP = {
     "English": "en-IN",
     "Hindi": "hi-IN",
     "Kannada": "kn-IN",
     "Tamil": "ta-IN",
     "Telugu": "te-IN",
+    "Bengali": "bn-IN",
+    "Gujarati": "gu-IN",
+    "Malayalam": "ml-IN",
+    "Marathi": "mr-IN",
+    "Odia": "od-IN",
+    "Punjabi": "pa-IN",
 }
 REGION_FOR_LANGUAGE = {
     "English": "Pan-India",
@@ -52,6 +58,12 @@ REGION_FOR_LANGUAGE = {
     "Kannada": "Bengaluru",
     "Tamil": "Chennai",
     "Telugu": "Hyderabad",
+    "Bengali": "Kolkata",
+    "Gujarati": "Ahmedabad",
+    "Malayalam": "Kochi",
+    "Marathi": "Mumbai",
+    "Odia": "Bhubaneswar",
+    "Punjabi": "Chandigarh",
 }
 
 #: Documented Agnes video task states; the last two are terminal.

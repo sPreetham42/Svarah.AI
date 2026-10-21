@@ -3,9 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { errorMessage, getModes } from './lib/api';
-import AuthMethodTabs, { useFirebaseLoginStatus } from './AuthMethodTabs';
-import GoogleLogin from './GoogleLogin';
-import PhoneLogin from './PhoneLogin';
+import EmailForm from './EmailForm';
+import SocialLogin from './SocialLogin';
 import ThemeToggle from './ThemeToggle';
 import Wordmark from './Wordmark.jsx';
 import './auth.css';
@@ -13,8 +12,6 @@ import './auth.css';
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState('');
-  const [method, setMethod] = useState('google');
-  const firebaseStatus = useFirebaseLoginStatus();
   const { user, checking, loginWithDemo } = useAuth();
   const navigate = useNavigate();
 
@@ -88,15 +85,8 @@ export default function Login() {
             </div>
           ) : null}
 
-          <AuthMethodTabs method={method} onChange={setMethod} />
-
-          {!firebaseStatus.ready ? (
-            <p className="phone-unavailable">{firebaseStatus.message}</p>
-          ) : method === 'phone' ? (
-            <PhoneLogin onSignedIn={() => navigate('/workspace')} />
-          ) : (
-            <GoogleLogin onSignedIn={() => navigate('/workspace')} />
-          )}
+          <EmailForm mode="login" onSignedIn={() => navigate('/workspace')} />
+          <SocialLogin verb="Continue" onSignedIn={() => navigate('/workspace')} />
 
           <div className="auth-footer">
             <p>Don't have an account yet? <Link to="/signup">Sign up for free</Link></p>

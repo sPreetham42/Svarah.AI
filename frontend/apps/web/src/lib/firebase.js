@@ -78,8 +78,8 @@ export async function sendPhoneCode(phone, container) {
 
 /**
  * Open Google's sign-in window and resolve to the Firebase ID token for the
- * account the visitor picked. Must be called from a click, or the browser
- * blocks the window.
+ * account the visitor picked.
+ * Must be called from a click, or the browser blocks the window.
  */
 export async function signInWithGoogle() {
   const { auth, authModule } = await loadAuth();
@@ -118,9 +118,9 @@ export function phoneErrorMessage(error) {
     case 'auth/popup-closed-by-user':
     case 'auth/cancelled-popup-request':
     case 'auth/user-cancelled':
-      return 'The Google window was closed before sign-in finished. Try again.';
+      return 'The sign-in window was closed before sign-in finished. Try again.';
     case 'auth/popup-blocked':
-      return 'Your browser blocked the Google sign-in window. Allow pop-ups for this site and try again.';
+      return 'Your browser blocked the sign-in window. Allow pop-ups for this site and try again.';
     case 'auth/account-exists-with-different-credential':
       return 'This email is already linked to another sign-in method.';
     case 'auth/operation-not-allowed':
