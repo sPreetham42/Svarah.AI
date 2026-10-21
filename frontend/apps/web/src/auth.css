@@ -673,6 +673,7 @@
   font: 600 8px 'DM Mono', monospace;
   color: var(--wf-lime-text, var(--wf-lime));
   text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 .btn-logout {
@@ -1876,4 +1877,17 @@ body.light-mode {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.apk-soon {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid var(--wf-lime-text, var(--wf-lime));
+  border-radius: 999px;
+  color: var(--wf-lime-text, var(--wf-lime));
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }

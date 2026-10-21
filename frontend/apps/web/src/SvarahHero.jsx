@@ -23,7 +23,7 @@ export function SvarahHeader() {
         <Wordmark size="lg" />
         <nav className={open ? 'nav-links open' : 'nav-links'}>
           <div className="mobile-nav-cta">
-            <Link className="nav-link" to="/download">Get the Android app</Link>
+            <Link className="nav-link" to="/download">Android app (coming soon)</Link>
             {user ? (
               <Link className="button btn-lime" to="/workspace">Open workspace <ArrowRight size={16}/></Link>
             ) : (
@@ -35,7 +35,7 @@ export function SvarahHeader() {
           </div>
         </nav>
         <div className="nav-actions">
-          <Link className="nav-link nav-download hide-mobile" to="/download"><Smartphone size={15}/> Get the app</Link>
+          <Link className="nav-link nav-download hide-mobile" to="/download"><Smartphone size={15}/> App coming soon</Link>
           {user ? (
             <Link className="button btn-lime nav-cta" to="/workspace">
               <span style={{width: 20, height: 20, borderRadius: '50%', background: '#171814', color: '#d8f878', display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 700}}>
@@ -107,7 +107,7 @@ export function SvarahHero() {
           <div className="svarah-actions">
             <Link className="button btn-lime" to="/signup">Start Creating Free <ArrowRight size={17}/></Link>
             <Link className="button btn-demo" to="/web-demo"><Play fill="currentColor" size={14}/> See the interactive demo</Link>
-            <Link className="button btn-demo" to="/download"><Smartphone size={15}/> Download the Android app</Link>
+            <Link className="button btn-demo" to="/download"><Smartphone size={15}/> Android app: coming soon</Link>
           </div>
           <div className="svarah-checks">
             <span><span className="tick-dot"/> Social media</span>

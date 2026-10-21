@@ -30,13 +30,15 @@ def test_unavailable_until_configured(client, anonymous, env_override, monkeypat
     monkeypatch.delenv("TITAN_GITHUB_CLIENT_ID", raising=False)
     env_override()
     assert _sign_in(client, anonymous).status_code == 503
-    assert client.get("/api/modes").json()["auth"]["github_login_enabled"] is False
+    auth = client.get("/api/modes").json()["auth"]
+    assert auth["github_login_enabled"] is False and auth["github_client_id"] is None
 
 
 def test_signs_in_with_the_verified_primary_email(client, anonymous, env_override, monkeypatch):
     env_override(**ENV)
     _fake_github(monkeypatch)
-    assert client.get("/api/modes").json()["auth"]["github_login_enabled"] is True
+    auth = client.get("/api/modes").json()["auth"]
+    assert auth["github_login_enabled"] is True and auth["github_client_id"] == "cid"
     response = _sign_in(client, anonymous)
     assert response.status_code == 200, response.text
     assert response.json()["account"]["email"] == "dev@example.com"

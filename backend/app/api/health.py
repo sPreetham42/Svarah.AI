@@ -75,6 +75,8 @@ def modes() -> ModesResponse:
             "phone_login_enabled": settings.phone_login_enabled,
             "google_login_enabled": settings.google_login_enabled,
             "github_login_enabled": settings.github_login_enabled,
+            # Public by design (it appears in the GitHub URL); one source of truth for the site.
+            "github_client_id": settings.github_client_id if settings.github_login_enabled else None,
             "token_ttl_hours": settings.auth_token_ttl_hours,
             "detail": _auth_detail(settings),
         },

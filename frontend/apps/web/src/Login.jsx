@@ -86,7 +86,7 @@ export default function Login() {
           ) : null}
 
           <EmailForm mode="login" onSignedIn={() => navigate('/workspace')} />
-          <SocialLogin verb="Continue" onSignedIn={() => navigate('/workspace')} />
+          <SocialLogin verb="Continue" />
 
           <div className="auth-footer">
             <p>Don't have an account yet? <Link to="/signup">Sign up for free</Link></p>

@@ -51,7 +51,7 @@ services:
         sync: false
       - key: TITAN_UPLOADPOST_API_KEY
         sync: false
-      # GitHub OAuth App; the client ID is also VITE_GITHUB_CLIENT_ID on the website.
+      # GitHub OAuth App (callback: <website>/auth/github). The website reads the ID from /api/modes.
       - key: TITAN_GITHUB_CLIENT_ID
         sync: false
       - key: TITAN_GITHUB_CLIENT_SECRET

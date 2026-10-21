@@ -17,8 +17,15 @@ export default function GitHubCallback() {
     const params = new URLSearchParams(window.location.search);
     const expected = sessionStorage.getItem('gh_oauth_state');
     sessionStorage.removeItem('gh_oauth_state');
-    if (params.get('error') || !params.get('code') || !expected || params.get('state') !== expected) {
-      setError('GitHub sign-in was cancelled or could not be verified. Please try again.');
+    if (params.get('error')) {
+      setError(params.get('error') === 'access_denied'
+        ? 'GitHub sign-in was cancelled.'
+        : `GitHub refused the sign-in: ${params.get('error_description') || params.get('error')}`);
+      return;
+    }
+    // The state must match the one this browser tab stored before leaving for GitHub (CSRF check).
+    if (!params.get('code') || !expected || params.get('state') !== expected) {
+      setError('This sign-in link could not be verified. Start again from the sign-in page.');
       return;
     }
     loginWithSocial('github', undefined, params.get('code'))

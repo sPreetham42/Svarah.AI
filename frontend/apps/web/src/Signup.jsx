@@ -31,7 +31,7 @@ export default function Signup() {
           </div>
 
           <EmailForm mode="signup" onSignedIn={() => navigate('/workspace')} />
-          <SocialLogin verb="Sign up" onSignedIn={() => navigate('/workspace')} />
+          <SocialLogin verb="Sign up" />
 
           <div className="auth-footer">
             <p>Already have an account? <Link to="/login">Sign in here</Link></p>
